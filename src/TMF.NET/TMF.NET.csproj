@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BlowFish" Version="1.0.2" />
+    <PackageReference Include="OpenSSL.NETStandard" Version="0.6.1" />
+  </ItemGroup>
+
+</Project>
