@@ -1,2 +1,2 @@
 # TMF.NET
-A powerful .NET wrapper for the TrackMania Forever Game API.
+A powerful, easy-to-use .NET wrapper for the TrackMania Forever Game API.
