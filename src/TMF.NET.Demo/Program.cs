@@ -67,7 +67,7 @@ try
 
     // Send a message to a player
     // Here we are only setting a subject and donation, but we can also obviously set a message body as well
-    await gameApi.SendMessageAsync(gameSession, Recipient, "Hello from TMF.NET (:", donation: Donation);
+    await gameApi.SendMessageAsync(gameSession, Recipient, "Hello from TMF.NET (:", null, Donation);
 
     // That's it for the demo!
     // I really hope you enjoy this library, as I did my best to make it as elegant and easy-to-use as possible

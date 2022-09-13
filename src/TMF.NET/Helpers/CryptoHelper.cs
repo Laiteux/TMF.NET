@@ -17,7 +17,7 @@ internal static class CryptoHelper
         var hashBytes = md5.ComputeHash(inputBytes);
 
         var stringBuilder = new StringBuilder();
-        hashBytes.ForEach(b => stringBuilder.Append((string?)b.ToString("x2")));
+        hashBytes.ForEach(b => stringBuilder.Append(b.ToString("x2")));
 
         return stringBuilder.ToString();
     }

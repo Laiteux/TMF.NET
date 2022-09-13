@@ -5,6 +5,8 @@ using TMF.NET.Helpers;
 using TMF.NET.Requests;
 using TMF.NET.Responses;
 
+#pragma warning disable CS8618
+
 namespace TMF.NET;
 
 public class GameSession
@@ -13,7 +15,7 @@ public class GameSession
     {
     }
 
-    public GameSession(string login, int sessionId, GameServer gameServer = null)
+    public GameSession(string login, int sessionId, GameServer? gameServer = null)
     {
         Login = login;
         SessionId = sessionId;
@@ -26,7 +28,7 @@ public class GameSession
         SessionId = openSessionResponse.Response.Content.SessionId;
         GameServer = openSessionResponse.Request.Session.GameServer;
 
-        string cr = openSessionResponse.Request.Content.Params.Cr;
+        string cr = openSessionResponse.Request.Content.Params!.Cr;
         string s = openSessionResponse.Response.Content.S;
         Blowfish = new BlowFish(CryptoHelper.MD5(cr + CryptoHelper.MD5(s + password)));
     }

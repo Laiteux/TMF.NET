@@ -19,7 +19,7 @@ public class GameApi
 
     private readonly HttpClient _httpClient;
 
-    public GameApi() : this(null, false)
+    public GameApi() : this(null!, false)
     {
     }
 
@@ -37,7 +37,7 @@ public class GameApi
         _httpClient.DefaultRequestHeaders.ConnectionClose = backconnect;
     }
 
-    public async Task<ResponseBase<TRequest, TResponse>> GetResponseAsync<TRequest, TResponse>(TRequest request, GameSession session = null)
+    public async Task<ResponseBase<TRequest, TResponse>> GetResponseAsync<TRequest, TResponse>(TRequest request, GameSession? session = null)
         where TRequest : RequestBase<TRequest>
         where TResponse : ResponseBase<TRequest, TResponse>
     {
@@ -45,7 +45,7 @@ public class GameApi
             request.Session = session;
 
         if (request.RequiresAuth)
-            request.Auth = new() { Value = session.GenerateAuthValue(request) };
+            request.Auth = new() { Value = session!.GenerateAuthValue(request) };
 
         var xmlSerializer = XmlSerializerCache.GetOrAdd(typeof(TRequest),
             type => new XmlSerializer(type, new XmlRootAttribute("root")));
@@ -69,7 +69,7 @@ public class GameApi
         xmlSerializer = XmlSerializerCache.GetOrAdd(typeof(ResponseBase<TRequest, TResponse>),
             type => new XmlSerializer(type, new XmlRootAttribute("r")));
 
-        var response = (ResponseBase<TRequest, TResponse>)xmlSerializer.Deserialize(responseContentStream);
+        var response = (ResponseBase<TRequest, TResponse>)xmlSerializer.Deserialize(responseContentStream)!;
 
         if (response.Response.RequestName == "RedirectOnMasterServer")
         {
@@ -77,9 +77,9 @@ public class GameApi
                 type => new XmlSerializer(type, new XmlRootAttribute("r")));
 
             responseContentStream.Position = 0;
-            var redirectResponse = (ResponseBase<NoRequest, RedirectOnMasterServerResponse>)xmlSerializer.Deserialize(responseContentStream);
+            var redirectResponse = (ResponseBase<NoRequest, RedirectOnMasterServerResponse>)xmlSerializer.Deserialize(responseContentStream)!;
 
-            session.GameServer = redirectResponse.Response.Content.NewDomain;
+            session!.GameServer = redirectResponse.Response.Content.NewDomain;
 
             // ReSharper disable once TailRecursiveCall
             return await GetResponseAsync<TRequest, TResponse>(request, session);
@@ -92,12 +92,12 @@ public class GameApi
         return response;
     }
 
-    public async Task<ResponseBase<OpenSessionRequest, OpenSessionResponse>> OpenSessionAsync(string login, GameServer gameServer = null)
+    public async Task<ResponseBase<OpenSessionRequest, OpenSessionResponse>> OpenSessionAsync(string login, GameServer? gameServer = null)
     {
         return await GetResponseAsync<OpenSessionRequest, OpenSessionResponse>(new OpenSessionRequest(), new GameSession(login, 1, gameServer));
     }
 
-    public async Task<GameSession> ConnectAsync(ResponseBase<OpenSessionRequest, OpenSessionResponse> openSessionResponse, string password, string playerKeyLast3characters = null)
+    public async Task<GameSession> ConnectAsync(ResponseBase<OpenSessionRequest, OpenSessionResponse> openSessionResponse, string password, string? playerKeyLast3characters = null)
     {
         var session = new GameSession(openSessionResponse, password);
 
@@ -121,7 +121,7 @@ public class GameApi
         return await GetResponseAsync<CheckLoginRequest, CheckLoginResponse>(new CheckLoginRequest(login));
     }
 
-    public async Task<ResponseBase<SendMessagesRequest, SendMessagesResponse>> SendMessageAsync(GameSession session, string recipient, string subject = null, string message = null, int donation = 0)
+    public async Task<ResponseBase<SendMessagesRequest, SendMessagesResponse>> SendMessageAsync(GameSession session, string recipient, string? subject, string? message, int donation = 0)
     {
         return await GetResponseAsync<SendMessagesRequest, SendMessagesResponse>(new SendMessagesRequest(recipient, subject, message, donation), session);
     }

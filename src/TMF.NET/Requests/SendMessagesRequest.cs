@@ -1,5 +1,7 @@
 ﻿using System.Xml.Serialization;
 
+#pragma warning disable CS8618
+
 namespace TMF.NET.Requests;
 
 public class SendMessagesRequest : RequestBase<SendMessagesRequest>
@@ -8,7 +10,7 @@ public class SendMessagesRequest : RequestBase<SendMessagesRequest>
     {
     }
 
-    internal SendMessagesRequest(string recipient, string subject, string message, int donation) : base("SendMessages", new()
+    internal SendMessagesRequest(string recipient, string? subject, string? message, int donation) : base("SendMessages", new()
     {
         Recipient = recipient,
         Subject = subject ?? " ",

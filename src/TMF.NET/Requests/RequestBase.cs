@@ -1,5 +1,7 @@
 ﻿using System.Xml.Serialization;
 
+#pragma warning disable CS8618
+
 namespace TMF.NET.Requests;
 
 public class RequestBase<TParams> where TParams : RequestBase<TParams>
@@ -8,7 +10,7 @@ public class RequestBase<TParams> where TParams : RequestBase<TParams>
     {
     }
 
-    protected RequestBase(string name, TParams parameters, bool requiresAuth = false)
+    protected RequestBase(string name, TParams? parameters, bool requiresAuth = false)
     {
         Game = RequestBaseGame.Default;
 
@@ -65,7 +67,7 @@ public class RequestBase<TParams> where TParams : RequestBase<TParams>
         public string Name { get; set; }
 
         [XmlElement("params")]
-        public TParams Params { get; set; }
+        public TParams? Params { get; set; }
     }
 
     public class RequestBaseAuth

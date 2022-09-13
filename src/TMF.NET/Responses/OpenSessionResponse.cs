@@ -1,6 +1,8 @@
 ﻿using System.Xml.Serialization;
 using TMF.NET.Requests;
 
+#pragma warning disable CS8618
+
 namespace TMF.NET.Responses;
 
 public class OpenSessionResponse : ResponseBase<OpenSessionRequest, OpenSessionResponse>

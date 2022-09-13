@@ -1,5 +1,7 @@
 ﻿using System.Xml.Serialization;
 
+#pragma warning disable CS8618
+
 namespace TMF.NET.Requests;
 
 public class OpenSessionRequest : RequestBase<OpenSessionRequest>

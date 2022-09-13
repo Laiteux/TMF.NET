@@ -2,7 +2,7 @@
 
 public class GameApiException : Exception
 {
-    internal GameApiException(int errorCode, string errorMessage)
+    internal GameApiException(int errorCode, string? errorMessage)
     {
         ErrorCode = errorCode;
         ErrorMessage = errorMessage;
@@ -10,9 +10,9 @@ public class GameApiException : Exception
 
     public int ErrorCode { get; }
 
-    private string ErrorMessage { get; }
+    private string? ErrorMessage { get; }
 
-    public override string Message => Errors.TryGetValue(ErrorCode, out string error) ? error : ErrorMessage ?? $"Error code: {ErrorCode}";
+    public override string Message => Errors.TryGetValue(ErrorCode, out string? error) ? error : ErrorMessage ?? $"Error code: {ErrorCode}";
 
     #region Implicit error values
     public const int

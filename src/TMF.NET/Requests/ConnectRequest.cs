@@ -1,6 +1,8 @@
 ﻿using System.Xml.Serialization;
 using TMF.NET.Helpers;
 
+#pragma warning disable CS8618
+
 namespace TMF.NET.Requests;
 
 public class ConnectRequest : RequestBase<ConnectRequest>
@@ -12,7 +14,7 @@ public class ConnectRequest : RequestBase<ConnectRequest>
     {
     }
 
-    internal ConnectRequest(GameSession session, string playerKeyLast3characters = null) : base("Connect", new()
+    internal ConnectRequest(GameSession session, string? playerKeyLast3characters = null) : base("Connect", new()
     {
         HardwareKey = session.Blowfish.EncryptCBC(Guid.NewGuid().ToString("N").ToUpper().Remove(20).Insert(12, "-")).ToUpper(),
         ValidationKey = playerKeyLast3characters == null ? null : session.Blowfish.EncryptCBC(playerKeyLast3characters.ToUpper()).ToUpper(),
@@ -27,7 +29,7 @@ public class ConnectRequest : RequestBase<ConnectRequest>
     public string HardwareKey { get; set; }
 
     [XmlElement("vk")]
-    public string ValidationKey { get; set; }
+    public string? ValidationKey { get; set; }
 
     [XmlElement("sd")]
     public string DedicatedServerDate { get; set; }

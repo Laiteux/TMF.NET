@@ -3,6 +3,8 @@ using System.Globalization;
 using System.Xml.Serialization;
 using TMF.NET.Requests;
 
+#pragma warning disable CS8618
+
 namespace TMF.NET.Responses;
 
 public class ResponseBase<TRequest, TResponse>
@@ -30,7 +32,7 @@ public class ResponseBase<TRequest, TResponse>
         public TResponse Content { get; set; }
 
         [XmlElement("e")]
-        public ResponseBaseResponseError Error { get; set; }
+        public ResponseBaseResponseError? Error { get; set; }
 
         public class ResponseBaseResponseError
         {
@@ -38,7 +40,7 @@ public class ResponseBase<TRequest, TResponse>
             public int Code { get; set; }
 
             [XmlElement("m")]
-            public string Message { get; set; }
+            public string? Message { get; set; }
 
             public void Throw() => throw new GameApiException(Code, Message);
         }
