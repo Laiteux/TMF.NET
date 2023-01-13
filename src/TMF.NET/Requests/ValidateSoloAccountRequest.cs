@@ -12,7 +12,7 @@ public class ValidateSoloAccountRequest : RequestBase<ValidateSoloAccountRequest
 
     internal ValidateSoloAccountRequest(GameSession session, string last3characters) : base("ValidateSoloAccount", new()
     {
-        ValidationKey = session.Blowfish.EncryptCBC(last3characters.ToUpper()).ToUpper()
+        ValidationKey = session.Blowfish.EncryptCBC(last3characters[^3..].ToUpper()).ToUpper()
     }, true)
     {
     }

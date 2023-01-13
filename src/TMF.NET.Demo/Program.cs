@@ -57,12 +57,9 @@ try
     if (Donation != 0 && maxSpendableCoppers < Donation)
         throw new("Not enough Coppers - Message not sent.");
 
-    // Only the last 3 characters are required
-    string playerKey = PlayerKey[^3..];
-
     // Submit, validate, associate player key with our session - required for spending coppers
     // In order to avoid this extra request, you can also pass the key to the ConnectAsync method right away
-    if (!(await gameApi.ValidatePlayerKeyAsync(gameSession, playerKey)))
+    if (!await gameApi.ValidatePlayerKeyAsync(gameSession, PlayerKey))
         throw new("Invalid player key.");
 
     // Send a message to a player
