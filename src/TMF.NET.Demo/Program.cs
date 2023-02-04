@@ -16,7 +16,7 @@ const int Donation = 0; // Amount of coppers to send along with the message (wil
 // If you wish, you can also pass a IWebProxy object for it to use
 var gameApi = new GameApi();
 
-// Open a new session with the account login
+// Open a new session using the account's login
 // You can also specify the account's game server (Nations/United) if you know it - if you don't, TMF.NET will handle it for you but then it might have to send 1 extra request
 // Returns a unique ID and a salt, which is being used for hashing values (not to worry about, as TMF.NET handles all of that for you behind the scenes!)
 var openSession = await gameApi.OpenSessionAsync(Login);
@@ -63,12 +63,12 @@ try
         throw new("Invalid player key.");
 
     // Send a message to a player
-    // Here we are only setting a subject and donation, but we can also obviously set a message body as well
+    // Here we are only setting a subject and donation, but we could obviously set a message body as well
     await gameApi.SendMessageAsync(gameSession, Recipient, "Hello from TMF.NET (:", null, Donation);
 
     // That's it for the demo!
     // I really hope you enjoy this library, as I did my best to make it as elegant and easy-to-use as possible
-    // If you do, please make sure to Star the repo on GitHub, that would be very much appreciated!
+    // If you do then please consider Starring the repo on GitHub, that would be very much appreciated!
     Console.ForegroundColor = ConsoleColor.Green;
     Console.WriteLine($"Done, message sent to {Recipient}");
 }

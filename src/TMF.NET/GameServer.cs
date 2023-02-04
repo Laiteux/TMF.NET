@@ -19,5 +19,6 @@ public class GameServer
         return gameServer == United ? United : Nations;
     }
 
-    public override string ToString() => _value;
+    public override string ToString()
+        => _value;
 }

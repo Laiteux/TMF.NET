@@ -21,7 +21,8 @@ public class ResponseBase<TRequest, TResponse>
     [XmlElement("e")]
     public string ExecutionTimeString { get; set; }
 
-    public TimeSpan ExecutionTime => TimeSpan.FromSeconds(double.Parse(ExecutionTimeString.Split(' ')[3], CultureInfo.InvariantCulture));
+    public TimeSpan ExecutionTime
+        => TimeSpan.FromSeconds(double.Parse(ExecutionTimeString.Split(' ')[3], CultureInfo.InvariantCulture));
 
     public class ResponseBaseResponse
     {
@@ -42,7 +43,8 @@ public class ResponseBase<TRequest, TResponse>
             [XmlElement("m")]
             public string? Message { get; set; }
 
-            public void Throw() => throw new GameApiException(Code, Message);
+            public void Throw()
+                => throw new GameApiException(Code, Message);
         }
     }
 }

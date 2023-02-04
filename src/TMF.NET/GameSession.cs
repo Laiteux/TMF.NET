@@ -50,7 +50,8 @@ public class GameSession
 
     internal string GenerateAuthValue<TRequest>(TRequest request) where TRequest : RequestBase<TRequest>
     {
-        if (Blowfish == null) throw new Exception("This session has no password associated.");
+        if (Blowfish == null)
+            throw new Exception("This session has no associated password.");
 
         const string salt1 = "00000000";
         const string salt2 = "00000000";

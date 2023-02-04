@@ -11,19 +11,17 @@ namespace TMF.NET;
 
 public class GameApi
 {
-    private static readonly Regex _responseTrimRegex = new(@"(</\w+>)(?!<).+", RegexOptions.Singleline | RegexOptions.Compiled);
-
     internal static readonly ConcurrentDictionary<Type, XmlSerializer> XmlSerializerCache = new();
     internal static readonly XmlWriterSettings XmlWriterSettings = new() { Async = true, OmitXmlDeclaration = true };
     internal static readonly XmlSerializerNamespaces XmlSerializerNamespaces = new(new XmlQualifiedName[] { new("", "") });
 
     private readonly HttpClient _httpClient;
-
-    public GameApi() : this(null!, false)
+    
+    public GameApi() : this(null!)
     {
     }
 
-    public GameApi(IWebProxy proxy, bool backconnect, TimeSpan? timeout = null)
+    public GameApi(IWebProxy proxy, bool backconnect = false, TimeSpan? timeout = null)
     {
         _httpClient = new(new HttpClientHandler()
         {
@@ -62,7 +60,8 @@ public class GameApi
         var responseContentString = await responseMessage.Content.ReadAsStringAsync();
 
         // Some responses such as Connect contain a bunch of weird characters after their XML response, so we trim them
-        responseContentString = _responseTrimRegex.Replace(responseContentString, m => m.Groups[1].Value);
+        responseContentString = new Regex(@"(</\w+>)(?!<).+", RegexOptions.Singleline | RegexOptions.Compiled)
+            .Replace(responseContentString, m => m.Groups[1].Value);
 
         await using var responseContentStream = responseContentString.ToStream();
 

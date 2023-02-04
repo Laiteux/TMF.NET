@@ -12,7 +12,8 @@ public class GameApiException : Exception
 
     private string? ErrorMessage { get; }
 
-    public override string Message => Errors.TryGetValue(ErrorCode, out string? error) ? error : ErrorMessage ?? $"Error code: {ErrorCode}";
+    public override string Message
+        => _errors.TryGetValue(ErrorCode, out string? error) ? error : (ErrorMessage ?? $"Error code: {ErrorCode}");
 
     #region Implicit error values
     public const int
@@ -27,7 +28,7 @@ public class GameApiException : Exception
         AlreadyConnected = 122;
     #endregion
 
-    private static readonly Dictionary<int, string> Errors = new()
+    private static readonly Dictionary<int, string> _errors = new()
     {
         { 4, "game unknown" },
         { 5, "invalid version" },
