@@ -59,7 +59,7 @@ public class GameApi
         using var responseMessage = await _httpClient.PostAsync(apiUrl, new StringContent(xmlString));
         var responseContentString = await responseMessage.Content.ReadAsStringAsync();
 
-        // Some responses such as Connect contain a bunch of weird characters after their XML response, so we trim them
+        // Some responses such as Connect contain a bunch of weird characters after their XML content, so we trim them
         responseContentString = new Regex(@"(</\w+>)(?!<).+", RegexOptions.Singleline | RegexOptions.Compiled)
             .Replace(responseContentString, m => m.Groups[1].Value);
 
