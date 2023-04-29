@@ -10,13 +10,13 @@ public class RequestBase<TParams> where TParams : RequestBase<TParams>
     {
     }
 
-    protected RequestBase(string name, TParams? parameters, bool requiresAuth = false)
+    protected RequestBase(string procedureName, TParams? parameters, bool requiresAuth = false)
     {
         Game = RequestBaseGame.Default;
 
         Content = new RequestBaseRequest()
         {
-            Name = name,
+            ProcedureName = procedureName,
             Params = parameters
         };
 
@@ -64,7 +64,7 @@ public class RequestBase<TParams> where TParams : RequestBase<TParams>
     public class RequestBaseRequest
     {
         [XmlElement("name")]
-        public string Name { get; set; }
+        public string ProcedureName { get; set; }
 
         [XmlElement("params")]
         public TParams? Params { get; set; }

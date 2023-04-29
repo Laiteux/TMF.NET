@@ -27,7 +27,7 @@ public class ResponseBase<TRequest, TResponse>
     public class ResponseBaseResponse
     {
         [XmlElement("n")]
-        public string RequestName { get; set; }
+        public string ProcedureName { get; set; }
 
         [XmlElement("c")]
         public TResponse Content { get; set; }

@@ -70,7 +70,7 @@ public class GameApi
 
         var response = (ResponseBase<TRequest, TResponse>)xmlSerializer.Deserialize(responseContentStream)!;
 
-        if (response.Response.RequestName == "RedirectOnMasterServer")
+        if (response.Response.ProcedureName == "RedirectOnMasterServer")
         {
             xmlSerializer = XmlSerializerCache.GetOrAdd(typeof(ResponseBase<NoRequest, RedirectOnMasterServerResponse>),
                 type => new XmlSerializer(type, new XmlRootAttribute("r")));
