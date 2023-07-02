@@ -13,7 +13,7 @@ public class CheckLoginRequest : RequestBase<CheckLoginRequest>
     internal CheckLoginRequest(string login) : base("CheckLogin", new()
     {
         Login = login
-    })
+    }, overrideGameServer: GameServer.United)
     {
     }
 

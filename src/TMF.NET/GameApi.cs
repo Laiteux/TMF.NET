@@ -54,7 +54,7 @@ public class GameApi
         xmlSerializer.Serialize(xmlWriter, request, XmlSerializerNamespaces);
         string xmlString = stringWriter.ToString();
 
-        string apiUrl = $"http://{session?.GameServer ?? GameServer.Default}/online_game/request.php";
+        string apiUrl = $"http://{(request.OverrideGameServer ?? session?.GameServer) ?? GameServer.Default}/online_game/request.php";
 
         using var responseMessage = await _httpClient.PostAsync(apiUrl, new StringContent(xmlString));
         var responseContentString = await responseMessage.Content.ReadAsStringAsync();

@@ -10,7 +10,7 @@ public class RequestBase<TParams> where TParams : RequestBase<TParams>
     {
     }
 
-    protected RequestBase(string procedureName, TParams? parameters, bool requiresAuth = false)
+    protected RequestBase(string procedureName, TParams? parameters, bool requiresAuth = false, GameServer? overrideGameServer = null)
     {
         Game = RequestBaseGame.Default;
 
@@ -21,6 +21,7 @@ public class RequestBase<TParams> where TParams : RequestBase<TParams>
         };
 
         RequiresAuth = requiresAuth;
+        OverrideGameServer = overrideGameServer;
     }
 
     [XmlElement("game")]
@@ -34,6 +35,9 @@ public class RequestBase<TParams> where TParams : RequestBase<TParams>
 
     [XmlIgnore]
     internal bool RequiresAuth { get; }
+
+    [XmlIgnore]
+    internal GameServer? OverrideGameServer { get; }
 
     [XmlElement("auth")]
     public RequestBaseAuth Auth { get; set; }

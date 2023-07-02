@@ -7,10 +7,10 @@ public class CheckLoginResponse : ResponseBase<CheckLoginRequest, CheckLoginResp
 {
     [XmlElement("e")]
     public int Exists { get; set; }
-
+    
     [XmlElement("p")] // paid/premium I guess
     public int United { get; set; }
-
+    
     public GameServer GetGameServer()
         => United == 1 ? GameServer.United : GameServer.Nations;
 }
