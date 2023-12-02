@@ -13,12 +13,12 @@ const string Recipient = "leak"; // Login of the player to send a private messag
 const int Donation = 0; // Amount of coppers to send along with the message (will cost an extra 5% Nadeo fee)
 
 // First of all, instantiate a GameApi object - used to interact with... well, the game API
-// If you wish, you can also pass a IWebProxy object in the constructor for it to use
+// If you wish, you can also pass a IWebProxy object to the constructor for it to use
 var gameApi = new GameApi();
 
 // Open a new session using the account's login
-// You can also specify the account's game server (Nations/United) if you know it - if you don't, TMF.NET will handle it for you but then it might have to send 1 extra request
-// Returns a unique ID and a salt, which is being used for hashing values (not to worry about, as TMF.NET handles all of that for you behind the scenes!)
+// You can also specify the account's game server (Nations/United) if you know it - if you don't, TMF.NET will figure it out for you but then it might have to send 1 extra request
+// Returns a unique ID and a salt, which is being used for hashing values (not to worry about, as TMF.NET handles all of that for you behind the scenes)
 var openSession = await gameApi.OpenSessionAsync(Login);
 
 // Connect with our previously created session, and the associated account's password
