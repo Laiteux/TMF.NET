@@ -14,14 +14,15 @@ public class ConnectRequest : RequestBase<ConnectRequest>
     {
     }
 
-    internal ConnectRequest(GameSession session, string? playerKeyLast3characters = null) : base("Connect", new()
-    {
-        HardwareKey = session.Blowfish.EncryptCBC(Guid.NewGuid().ToString("N").ToUpper().Remove(20).Insert(12, "-")).ToUpper(),
-        ValidationKey = playerKeyLast3characters == null ? null : session.Blowfish.EncryptCBC(playerKeyLast3characters[^3..].ToUpper()).ToUpper(),
-        DedicatedServerDate = "0",
-        PublicKey = RsaPublicKey,
-        Login = CryptoHelper.RsaPrivateEncryptToBase64(RsaPrivateKeyPem, session.Login)
-    }, true)
+    internal ConnectRequest(GameSession session, string? playerKeyLast3characters = null)
+        : base("Connect", new()
+        {
+            HardwareKey = session.Blowfish.EncryptCBC(Guid.NewGuid().ToString("N").ToUpper().Remove(20).Insert(12, "-")).ToUpper(),
+            ValidationKey = playerKeyLast3characters == null ? null : session.Blowfish.EncryptCBC(playerKeyLast3characters[^3..].ToUpper()).ToUpper(),
+            DedicatedServerDate = "0",
+            PublicKey = RsaPublicKey,
+            Login = CryptoHelper.RsaPrivateEncryptToBase64(RsaPrivateKeyPem, session.Login)
+        }, true)
     {
     }
 

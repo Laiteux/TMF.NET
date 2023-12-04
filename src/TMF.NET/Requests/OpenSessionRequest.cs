@@ -11,7 +11,8 @@ public class OpenSessionRequest : RequestBase<OpenSessionRequest>
         Cr = cr;
     }
 
-    public OpenSessionRequest() : base("OpenSession", new OpenSessionRequest("00000000"))
+    public OpenSessionRequest()
+        : base("OpenSession", new OpenSessionRequest("00000000"))
     {
     }
 

@@ -16,7 +16,7 @@ public class GameApi
     internal static readonly XmlSerializerNamespaces XmlSerializerNamespaces = new(new XmlQualifiedName[] { new("", "") });
 
     private readonly HttpClient _httpClient;
-    
+
     public GameApi() : this(null!)
     {
     }
@@ -91,45 +91,73 @@ public class GameApi
         return response;
     }
 
-    public async Task<ResponseBase<OpenSessionRequest, OpenSessionResponse>> OpenSessionAsync(string login, GameServer? gameServer = null)
+    public async Task<ResponseBase<OpenSessionRequest, OpenSessionResponse>> OpenSessionAsync(
+        string login,
+        GameServer? gameServer = null)
     {
-        return await GetResponseAsync<OpenSessionRequest, OpenSessionResponse>(new OpenSessionRequest(), new GameSession(login, 1, gameServer));
+        return await GetResponseAsync<OpenSessionRequest, OpenSessionResponse>(
+            new OpenSessionRequest(),
+            new GameSession(login, 1, gameServer));
     }
 
-    public async Task<GameSession> ConnectAsync(ResponseBase<OpenSessionRequest, OpenSessionResponse> openSessionResponse, string password, string? playerKeyLast3characters = null)
+    public async Task<GameSession> ConnectAsync(
+        ResponseBase<OpenSessionRequest, OpenSessionResponse> openSessionResponse,
+        string password,
+        string? playerKeyLast3characters = null)
     {
         var session = new GameSession(openSessionResponse, password);
 
-        await GetResponseAsync<ConnectRequest, ConnectResponse>(new ConnectRequest(session, playerKeyLast3characters), session);
+        await GetResponseAsync<ConnectRequest, ConnectResponse>(
+            new ConnectRequest(session, playerKeyLast3characters),
+            session);
 
         return session;
     }
 
-    public async Task<ResponseBase<DisconnectRequest, DisconnectResponse>> DisconnectAsync(GameSession session)
+    public async Task<ResponseBase<DisconnectRequest, DisconnectResponse>> DisconnectAsync(
+        GameSession session)
     {
-        return await GetResponseAsync<DisconnectRequest, DisconnectResponse>(new DisconnectRequest(), session);
+        return await GetResponseAsync<DisconnectRequest, DisconnectResponse>(
+            new DisconnectRequest(),
+            session);
     }
 
-    public async Task<ResponseBase<GetOnlineProfileRequest, GetOnlineProfileResponse>> GetOnlineProfileAsync(GameSession session)
+    public async Task<ResponseBase<GetOnlineProfileRequest, GetOnlineProfileResponse>> GetOnlineProfileAsync(
+        GameSession session)
     {
-        return await GetResponseAsync<GetOnlineProfileRequest, GetOnlineProfileResponse>(new GetOnlineProfileRequest(), session);
+        return await GetResponseAsync<GetOnlineProfileRequest, GetOnlineProfileResponse>(
+            new GetOnlineProfileRequest(),
+            session);
     }
 
-    public async Task<ResponseBase<CheckLoginRequest, CheckLoginResponse>> ValidateUsernameAsync(string login)
+    public async Task<ResponseBase<CheckLoginRequest, CheckLoginResponse>> ValidateUsernameAsync(
+        string login)
     {
-        return await GetResponseAsync<CheckLoginRequest, CheckLoginResponse>(new CheckLoginRequest(login));
+        return await GetResponseAsync<CheckLoginRequest, CheckLoginResponse>(
+            new CheckLoginRequest(login));
     }
 
-    public async Task<ResponseBase<SendMessagesRequest, SendMessagesResponse>> SendMessageAsync(GameSession session, string recipient, string? subject, string? message, int donation = 0)
+    public async Task<ResponseBase<SendMessagesRequest, SendMessagesResponse>> SendMessageAsync(
+        GameSession session,
+        string recipient,
+        string? subject,
+        string? message,
+        int donation = 0)
     {
-        return await GetResponseAsync<SendMessagesRequest, SendMessagesResponse>(new SendMessagesRequest(recipient, subject, message, donation), session);
+        return await GetResponseAsync<SendMessagesRequest, SendMessagesResponse>(
+            new SendMessagesRequest(recipient, subject, message, donation),
+            session);
     }
 
-    public async Task<bool> ValidatePlayerKeyAsync(GameSession session, string last3characters)
+    public async Task<bool> ValidatePlayerKeyAsync(
+        GameSession session,
+        string last3characters)
     {
         try
         {
-            await GetResponseAsync<ValidateSoloAccountRequest, ValidateSoloAccountResponse>(new ValidateSoloAccountRequest(session, last3characters), session);
+            await GetResponseAsync<ValidateSoloAccountRequest, ValidateSoloAccountResponse>(
+                new ValidateSoloAccountRequest(session, last3characters),
+                session);
 
             return true;
         }

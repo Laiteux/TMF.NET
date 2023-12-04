@@ -63,12 +63,12 @@ public class GameSession
         using var xmlWriter = XmlWriter.Create(stringWriter, GameApi.XmlWriterSettings);
 
         xmlSerializer.Serialize(xmlWriter, request.Content, GameApi.XmlSerializerNamespaces);
-        string xmlRequestContent = stringWriter.ToString();
+        var requestContentString = stringWriter.ToString();
 
         return Blowfish.EncryptCBC(
-            salt1 + salt2 +
-            CryptoHelper.MD5(salt2 + xmlRequestContent).ToUpper() +
-            (++AuthCount).ToString("X48"))
+                salt1 + salt2 +
+                CryptoHelper.MD5(salt2 + requestContentString).ToUpper() +
+                (++AuthCount).ToString("X48"))
             .ToUpper();
     }
 }

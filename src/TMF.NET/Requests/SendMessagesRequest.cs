@@ -10,13 +10,14 @@ public class SendMessagesRequest : RequestBase<SendMessagesRequest>
     {
     }
 
-    internal SendMessagesRequest(string recipient, string? subject, string? message, int donation) : base("SendMessages", new()
-    {
-        Recipient = recipient,
-        Subject = subject ?? " ",
-        Message = message ?? "+",
-        Donation = donation.ToString() // can't use int because it's buggy
-    }, true)
+    internal SendMessagesRequest(string recipient, string? subject, string? message, int donation)
+        : base("SendMessages", new()
+        {
+            Recipient = recipient,
+            Subject = subject ?? " ",
+            Message = message ?? "+",
+            Donation = donation.ToString() // can't use int because it's buggy
+        }, true)
     {
     }
 

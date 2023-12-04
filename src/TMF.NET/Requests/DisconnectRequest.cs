@@ -2,7 +2,8 @@
 
 public class DisconnectRequest : RequestBase<DisconnectRequest>
 {
-    internal DisconnectRequest() : base("Disconnect", null, true)
+    internal DisconnectRequest()
+        : base("Disconnect", null, true)
     {
     }
 }
