@@ -7,9 +7,9 @@ using TMF.NET.Requests;
 
 namespace TMF.NET.Responses;
 
-public class ResponseBase<TRequest, TResponse>
-    where TRequest : RequestBase<TRequest>
-    where TResponse : ResponseBase<TRequest, TResponse>
+public class TmfResponseBase<TRequest, TResponse>
+    where TRequest : TmfRequestBase<TRequest>
+    where TResponse : TmfResponseBase<TRequest, TResponse>
 {
     [XmlIgnore]
     public TRequest Request { get; set; }
@@ -44,7 +44,7 @@ public class ResponseBase<TRequest, TResponse>
             public string? Message { get; set; }
 
             public void Throw()
-                => throw new GameApiException(Code, Message);
+                => throw new TmfGameApiException(Code, Message);
         }
     }
 }

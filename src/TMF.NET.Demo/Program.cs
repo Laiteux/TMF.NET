@@ -12,9 +12,9 @@ const string PlayerKey = "XXX"; // Only the last 3 characters are required for s
 const string Recipient = "shadyx.tm"; // Login of the player to send a private message to (will cost 2 coppers)
 const int Donation = 0; // Amount of coppers to send along with the message (will cost an extra 5% Nadeo fee)
 
-// First of all, instantiate a GameApi object - used to interact with... well, the game API
+// First of all, instantiate a TmfGameApi object - used to interact with... well, the game API
 // If you wish, you can also pass a IWebProxy object to the constructor for it to use
-var gameApi = new GameApi();
+var gameApi = new TmfGameApi();
 
 // Open a new session using the account's login
 // You can also specify the account's game server (Nations/United) if you know it - if you don't, TMF.NET will figure it out for you but then it might have to send 1 extra request
@@ -22,7 +22,7 @@ var gameApi = new GameApi();
 var openSession = await gameApi.OpenSessionAsync(Login);
 
 // Connect with our previously created session, and the associated account's password
-// If the password is correct, our session ID will then become authenticated server-side, and we will be able to use this GameSession object to proceed further
+// If the password is correct, our session ID will then become authenticated server-side, and we will be able to use this TmfGameSession object to proceed further
 var gameSession = await gameApi.ConnectAsync(openSession, Password);
 
 Console.WriteLine($"Successfully logged in as {Login}");
@@ -33,9 +33,9 @@ try
 {
     // Retrieve some info about the account's online profile (ranking, location, email, coppers...)
     // I have only included a few values I considered relevant, but way more data is actually available
-    // If you wish, you could create your own custom response class with more values by making it implement GetOnlineProfileResponse or even just ResponseBase
-    // Then, you could use it to send a GetOnlineProfileRequest and retrieve the data you're looking for, just like that:
-    // await gameApi.GetResponseAsync<GetOnlineProfileRequest, MyCustomGetOnlineProfileResponse>(new GetOnlineProfileRequest(), gameSession)
+    // If you wish, you could create your own custom response class with more values by making it implement TmfGetOnlineProfileResponse or even just TmfResponseBase
+    // Then, you could use it to send a TmfGetOnlineProfileRequest and retrieve the data you're looking for, just like that:
+    // await gameApi.GetResponseAsync<TmfGetOnlineProfileRequest, MyCustomGetOnlineProfileResponse>(new TmfGetOnlineProfileRequest(), gameSession)
     var onlineProfile = await gameApi.GetOnlineProfileAsync(gameSession);
 
     long coppers = onlineProfile.Response.Content.Coppers;
@@ -45,7 +45,7 @@ try
     Console.WriteLine($"Coppers: {coppers}");
     Console.WriteLine();
 
-    if (gameSession.GameServer != GameServer.United)
+    if (gameSession.GameServer != TmfGameServer.United)
         throw new("Not a United account - Message not sent.");
 
     if (string.IsNullOrWhiteSpace(PlayerKey))

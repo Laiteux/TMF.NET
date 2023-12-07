@@ -4,11 +4,11 @@ using TMF.NET.Requests;
 
 namespace TMF.NET.Responses;
 
-public class CheckLoginResponse : ResponseBase<CheckLoginRequest, CheckLoginResponse>
+public class TmfCheckLoginResponse : TmfResponseBase<TmfCheckLoginRequest, TmfCheckLoginResponse>
 {
     public bool Exists => _E == 1;
     public bool IsUnited => _P == 1;
-    public GameServer GameServer => IsUnited ? GameServer.United : GameServer.Nations;
+    public TmfGameServer GameServer => IsUnited ? TmfGameServer.United : TmfGameServer.Nations;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     [XmlElement("e")]

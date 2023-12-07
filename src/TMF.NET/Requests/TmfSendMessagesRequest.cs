@@ -4,13 +4,13 @@
 
 namespace TMF.NET.Requests;
 
-public class SendMessagesRequest : RequestBase<SendMessagesRequest>
+public class TmfSendMessagesRequest : TmfRequestBase<TmfSendMessagesRequest>
 {
-    private SendMessagesRequest()
+    private TmfSendMessagesRequest()
     {
     }
 
-    public SendMessagesRequest(string recipient, string? subject, string? message, long donation)
+    public TmfSendMessagesRequest(string recipient, string? subject, string? message, long donation)
         : base("SendMessages", new()
         {
             Recipient = recipient,

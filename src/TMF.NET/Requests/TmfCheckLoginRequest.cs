@@ -4,17 +4,17 @@
 
 namespace TMF.NET.Requests;
 
-public class CheckLoginRequest : RequestBase<CheckLoginRequest>
+public class TmfCheckLoginRequest : TmfRequestBase<TmfCheckLoginRequest>
 {
-    private CheckLoginRequest()
+    private TmfCheckLoginRequest()
     {
     }
 
-    public CheckLoginRequest(string login)
+    public TmfCheckLoginRequest(string login)
         : base("CheckLogin", new()
         {
             Login = login
-        }, overrideGameServer: GameServer.United)
+        }, overrideGameServer: TmfGameServer.United)
     {
     }
 

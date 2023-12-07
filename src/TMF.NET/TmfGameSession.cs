@@ -9,20 +9,20 @@ using TMF.NET.Responses;
 
 namespace TMF.NET;
 
-public class GameSession
+public class TmfGameSession
 {
-    private GameSession()
+    private TmfGameSession()
     {
     }
 
-    public GameSession(string login, long sessionId, GameServer? gameServer = null)
+    public TmfGameSession(string login, long sessionId, TmfGameServer? gameServer = null)
     {
         Login = login;
         SessionId = sessionId;
-        GameServer = gameServer ?? GameServer.Default;
+        GameServer = gameServer ?? TmfGameServer.Default;
     }
 
-    internal GameSession(ResponseBase<OpenSessionRequest, OpenSessionResponse> openSessionResponse, string password)
+    internal TmfGameSession(TmfResponseBase<TmfOpenSessionRequest, TmfOpenSessionResponse> openSessionResponse, string password)
     {
         Login = openSessionResponse.Request.Session.Login;
         SessionId = openSessionResponse.Response.Content.SessionId;
@@ -40,7 +40,7 @@ public class GameSession
     public long SessionId { get; /*internal*/ set; }
 
     [XmlIgnore]
-    public GameServer GameServer { get; /*internal*/ set; }
+    public TmfGameServer GameServer { get; /*internal*/ set; }
 
     [XmlIgnore]
     internal BlowFish Blowfish { get; }
@@ -49,7 +49,7 @@ public class GameSession
     private long AuthCount { get; set; }
 
     internal string GenerateAuthValue<TRequest>(TRequest request)
-        where TRequest : RequestBase<TRequest>
+        where TRequest : TmfRequestBase<TRequest>
     {
         if (Blowfish == null)
             throw new InvalidOperationException("This session has no associated password.");
@@ -57,13 +57,13 @@ public class GameSession
         const string salt1 = "00000000";
         const string salt2 = "00000000";
 
-        var xmlSerializer = GameApi.XmlSerializerCache.GetOrAdd(typeof(RequestBase<TRequest>.RequestBaseRequest),
+        var xmlSerializer = TmfGameApi.XmlSerializerCache.GetOrAdd(typeof(TmfRequestBase<TRequest>.RequestBaseRequest),
             type => new XmlSerializer(type, new XmlRootAttribute("request")));
 
         using var stringWriter = new StringWriter();
-        using var xmlWriter = XmlWriter.Create(stringWriter, GameApi.XmlWriterSettings);
+        using var xmlWriter = XmlWriter.Create(stringWriter, TmfGameApi.XmlWriterSettings);
 
-        xmlSerializer.Serialize(xmlWriter, request.Content, GameApi.XmlSerializerNamespaces);
+        xmlSerializer.Serialize(xmlWriter, request.Content, TmfGameApi.XmlSerializerNamespaces);
         var requestContentString = stringWriter.ToString();
 
         return Blowfish.EncryptCBC(

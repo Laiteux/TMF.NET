@@ -6,7 +6,7 @@ using TMF.NET.Requests;
 
 namespace TMF.NET.Responses;
 
-public class RedirectOnMasterServerResponse : ResponseBase<NoRequest, RedirectOnMasterServerResponse>
+public class TmfRedirectOnMasterServerResponse : TmfResponseBase<TmfNoRequest, TmfRedirectOnMasterServerResponse>
 {
     public string NewDomain => _A.NewDomain;
 

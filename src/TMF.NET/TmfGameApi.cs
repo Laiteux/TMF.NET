@@ -9,7 +9,7 @@ using TMF.NET.Responses;
 
 namespace TMF.NET;
 
-public class GameApi
+public class TmfGameApi
 {
     internal static readonly ConcurrentDictionary<Type, XmlSerializer> XmlSerializerCache = new();
     internal static readonly XmlWriterSettings XmlWriterSettings = new() { Async = true, OmitXmlDeclaration = true };
@@ -17,11 +17,11 @@ public class GameApi
 
     private readonly HttpClient _httpClient;
 
-    public GameApi() : this(null!)
+    public TmfGameApi() : this(null!)
     {
     }
 
-    public GameApi(IWebProxy proxy, bool rotating = false, TimeSpan? timeout = null)
+    public TmfGameApi(IWebProxy proxy, bool rotating = false, TimeSpan? timeout = null)
     {
         _httpClient = new(new HttpClientHandler()
         {
@@ -35,9 +35,9 @@ public class GameApi
         _httpClient.DefaultRequestHeaders.ConnectionClose = rotating;
     }
 
-    public async Task<ResponseBase<TRequest, TResponse>> GetResponseAsync<TRequest, TResponse>(TRequest request, GameSession? session = null)
-        where TRequest : RequestBase<TRequest>
-        where TResponse : ResponseBase<TRequest, TResponse>
+    public async Task<TmfResponseBase<TRequest, TResponse>> GetResponseAsync<TRequest, TResponse>(TRequest request, TmfGameSession? session = null)
+        where TRequest : TmfRequestBase<TRequest>
+        where TResponse : TmfResponseBase<TRequest, TResponse>
     {
         if (session != null)
             request.Session = session;
@@ -54,7 +54,7 @@ public class GameApi
         xmlSerializer.Serialize(xmlWriter, request, XmlSerializerNamespaces);
         string xmlString = stringWriter.ToString();
 
-        string apiUrl = $"http://{(request.OverrideGameServer ?? session?.GameServer) ?? GameServer.Default}/online_game/request.php";
+        string apiUrl = $"http://{(request.OverrideGameServer ?? session?.GameServer) ?? TmfGameServer.Default}/online_game/request.php";
 
         using var responseMessage = await _httpClient.PostAsync(apiUrl, new StringContent(xmlString));
         var responseContentString = await responseMessage.Content.ReadAsStringAsync();
@@ -65,18 +65,18 @@ public class GameApi
 
         await using var responseContentStream = responseContentString.ToStream();
 
-        xmlSerializer = XmlSerializerCache.GetOrAdd(typeof(ResponseBase<TRequest, TResponse>),
+        xmlSerializer = XmlSerializerCache.GetOrAdd(typeof(TmfResponseBase<TRequest, TResponse>),
             type => new XmlSerializer(type, new XmlRootAttribute("r")));
 
-        var response = (ResponseBase<TRequest, TResponse>)xmlSerializer.Deserialize(responseContentStream)!;
+        var response = (TmfResponseBase<TRequest, TResponse>)xmlSerializer.Deserialize(responseContentStream)!;
 
         if (response.Response.ProcedureName == "RedirectOnMasterServer")
         {
-            xmlSerializer = XmlSerializerCache.GetOrAdd(typeof(ResponseBase<NoRequest, RedirectOnMasterServerResponse>),
+            xmlSerializer = XmlSerializerCache.GetOrAdd(typeof(TmfResponseBase<TmfNoRequest, TmfRedirectOnMasterServerResponse>),
                 type => new XmlSerializer(type, new XmlRootAttribute("r")));
 
             responseContentStream.Position = 0;
-            var redirectResponse = (ResponseBase<NoRequest, RedirectOnMasterServerResponse>)xmlSerializer.Deserialize(responseContentStream)!;
+            var redirectResponse = (TmfResponseBase<TmfNoRequest, TmfRedirectOnMasterServerResponse>)xmlSerializer.Deserialize(responseContentStream)!;
 
             session!.GameServer = redirectResponse.Response.Content.NewDomain;
 
@@ -91,79 +91,79 @@ public class GameApi
         return response;
     }
 
-    public async Task<ResponseBase<OpenSessionRequest, OpenSessionResponse>> OpenSessionAsync(
+    public async Task<TmfResponseBase<TmfOpenSessionRequest, TmfOpenSessionResponse>> OpenSessionAsync(
         string login,
-        GameServer? gameServer = null)
+        TmfGameServer? gameServer = null)
     {
-        return await GetResponseAsync<OpenSessionRequest, OpenSessionResponse>(
-            new OpenSessionRequest(),
-            new GameSession(login, -1, gameServer));
+        return await GetResponseAsync<TmfOpenSessionRequest, TmfOpenSessionResponse>(
+            new TmfOpenSessionRequest(),
+            new TmfGameSession(login, -1, gameServer));
     }
 
-    public async Task<GameSession> ConnectAsync(
-        ResponseBase<OpenSessionRequest, OpenSessionResponse> openSessionResponse,
+    public async Task<TmfGameSession> ConnectAsync(
+        TmfResponseBase<TmfOpenSessionRequest, TmfOpenSessionResponse> openSessionResponse,
         string password,
         string? playerKeyLast3characters = null)
     {
-        var session = new GameSession(openSessionResponse, password);
+        var session = new TmfGameSession(openSessionResponse, password);
 
-        await GetResponseAsync<ConnectRequest, ConnectResponse>(
-            new ConnectRequest(session, playerKeyLast3characters),
+        await GetResponseAsync<TmfConnectRequest, TmfConnectResponse>(
+            new TmfConnectRequest(session, playerKeyLast3characters),
             session);
 
         return session;
     }
 
-    public async Task<ResponseBase<DisconnectRequest, DisconnectResponse>> DisconnectAsync(
-        GameSession session)
+    public async Task<TmfResponseBase<TmfDisconnectRequest, TmfDisconnectResponse>> DisconnectAsync(
+        TmfGameSession session)
     {
-        return await GetResponseAsync<DisconnectRequest, DisconnectResponse>(
-            new DisconnectRequest(),
+        return await GetResponseAsync<TmfDisconnectRequest, TmfDisconnectResponse>(
+            new TmfDisconnectRequest(),
             session);
     }
 
-    public async Task<ResponseBase<GetOnlineProfileRequest, GetOnlineProfileResponse>> GetOnlineProfileAsync(
-        GameSession session)
+    public async Task<TmfResponseBase<TmfGetOnlineProfileRequest, TmfGetOnlineProfileResponse>> GetOnlineProfileAsync(
+        TmfGameSession session)
     {
-        return await GetResponseAsync<GetOnlineProfileRequest, GetOnlineProfileResponse>(
-            new GetOnlineProfileRequest(),
+        return await GetResponseAsync<TmfGetOnlineProfileRequest, TmfGetOnlineProfileResponse>(
+            new TmfGetOnlineProfileRequest(),
             session);
     }
 
-    public async Task<ResponseBase<CheckLoginRequest, CheckLoginResponse>> CheckLoginAsync(
+    public async Task<TmfResponseBase<TmfCheckLoginRequest, TmfCheckLoginResponse>> CheckLoginAsync(
         string login)
     {
-        return await GetResponseAsync<CheckLoginRequest, CheckLoginResponse>(
-            new CheckLoginRequest(login));
+        return await GetResponseAsync<TmfCheckLoginRequest, TmfCheckLoginResponse>(
+            new TmfCheckLoginRequest(login));
     }
 
-    public async Task<ResponseBase<SendMessagesRequest, SendMessagesResponse>> SendMessageAsync(
-        GameSession session,
+    public async Task<TmfResponseBase<TmfSendMessagesRequest, TmfSendMessagesResponse>> SendMessageAsync(
+        TmfGameSession session,
         string recipient,
         string? subject,
         string? message,
         long donation = 0)
     {
-        return await GetResponseAsync<SendMessagesRequest, SendMessagesResponse>(
-            new SendMessagesRequest(recipient, subject, message, donation),
+        return await GetResponseAsync<TmfSendMessagesRequest, TmfSendMessagesResponse>(
+            new TmfSendMessagesRequest(recipient, subject, message, donation),
             session);
     }
 
     public async Task<bool> ValidatePlayerKeyAsync(
-        GameSession session,
+        TmfGameSession session,
         string last3characters)
     {
         try
         {
-            await GetResponseAsync<ValidateSoloAccountRequest, ValidateSoloAccountResponse>(
-                new ValidateSoloAccountRequest(session, last3characters),
+            await GetResponseAsync<TmfValidateSoloAccountRequest, TmfValidateSoloAccountResponse>(
+                new TmfValidateSoloAccountRequest(session, last3characters),
                 session);
 
             return true;
         }
         catch (Exception ex)
         {
-            if (ex is GameApiException { ErrorCode: GameApiException.InvalidPlayerKey })
+            if (ex is TmfGameApiException { ErrorCode: TmfGameApiException.InvalidPlayerKey })
             {
                 return false;
             }

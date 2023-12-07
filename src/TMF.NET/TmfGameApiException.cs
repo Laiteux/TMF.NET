@@ -1,8 +1,8 @@
 ﻿namespace TMF.NET;
 
-public class GameApiException : Exception
+public class TmfGameApiException : Exception
 {
-    internal GameApiException(int errorCode, string? errorMessage)
+    internal TmfGameApiException(int errorCode, string? errorMessage)
     {
         ErrorCode = errorCode;
         ErrorMessage = errorMessage;

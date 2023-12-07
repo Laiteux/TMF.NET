@@ -5,7 +5,7 @@ using TMF.NET.Requests;
 
 namespace TMF.NET.Responses;
 
-public class OpenSessionResponse : ResponseBase<OpenSessionRequest, OpenSessionResponse>
+public class TmfOpenSessionResponse : TmfResponseBase<TmfOpenSessionRequest, TmfOpenSessionResponse>
 {
     [XmlElement("i")]
     public long SessionId { get; set; }

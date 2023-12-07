@@ -4,13 +4,13 @@
 
 namespace TMF.NET.Requests;
 
-public class ValidateSoloAccountRequest : RequestBase<ValidateSoloAccountRequest>
+public class TmfValidateSoloAccountRequest : TmfRequestBase<TmfValidateSoloAccountRequest>
 {
-    private ValidateSoloAccountRequest()
+    private TmfValidateSoloAccountRequest()
     {
     }
 
-    public ValidateSoloAccountRequest(GameSession session, string last3characters)
+    public TmfValidateSoloAccountRequest(TmfGameSession session, string last3characters)
         : base("ValidateSoloAccount", new()
         {
             ValidationKey = session.Blowfish.EncryptCBC(last3characters[^3..].ToUpper()).ToUpper()

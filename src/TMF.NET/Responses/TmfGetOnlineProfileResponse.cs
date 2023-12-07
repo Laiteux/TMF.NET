@@ -6,7 +6,7 @@ using TMF.NET.Requests;
 
 namespace TMF.NET.Responses;
 
-public class GetOnlineProfileResponse : ResponseBase<GetOnlineProfileRequest, GetOnlineProfileResponse>
+public class TmfGetOnlineProfileResponse : TmfResponseBase<TmfGetOnlineProfileRequest, TmfGetOnlineProfileResponse>
 {
     public long OnlineRanking => _B.OnlineRanking;
     public string Location => _D.Location;

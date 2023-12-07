@@ -4,14 +4,14 @@
 
 namespace TMF.NET.Requests;
 
-public class RequestBase<TParams>
-    where TParams : RequestBase<TParams>
+public class TmfRequestBase<TParams>
+    where TParams : TmfRequestBase<TParams>
 {
-    protected RequestBase()
+    protected TmfRequestBase()
     {
     }
 
-    public RequestBase(string procedureName, TParams? parameters, bool requiresAuth = false, GameServer? overrideGameServer = null)
+    public TmfRequestBase(string procedureName, TParams? parameters, bool requiresAuth = false, TmfGameServer? overrideGameServer = null)
     {
         Game = RequestBaseGame.Default;
 
@@ -29,7 +29,7 @@ public class RequestBase<TParams>
     public RequestBaseGame Game { get; /*private*/ set; }
 
     [XmlElement("author")]
-    public GameSession Session { get; /*internal*/ set; }
+    public TmfGameSession Session { get; /*internal*/ set; }
 
     [XmlElement("request")]
     public RequestBaseRequest Content { get; /*private*/ set; }
@@ -41,7 +41,7 @@ public class RequestBase<TParams>
     internal bool RequiresAuth { get; }
 
     [XmlIgnore]
-    internal GameServer? OverrideGameServer { get; }
+    internal TmfGameServer? OverrideGameServer { get; }
 
     public class RequestBaseGame
     {
