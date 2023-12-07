@@ -2,7 +2,7 @@
 
 public class GetOnlineProfileRequest : RequestBase<GetOnlineProfileRequest>
 {
-    internal GetOnlineProfileRequest()
+    public GetOnlineProfileRequest()
         : base("GetOnlineProfile", null)
     {
     }

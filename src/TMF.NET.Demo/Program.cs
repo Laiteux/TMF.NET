@@ -6,10 +6,10 @@
 
 using TMF.NET;
 
-const string Login = "19191"; // Account login
-const string Password = "19191"; // Account password
-const string PlayerKey = "5EC"; // Only the last 3 characters are required for spending coppers
-const string Recipient = "leak"; // Login of the player to send a private message to (will cost 2 coppers)
+const string Login = "YOUR_LOGIN"; // Account login
+const string Password = "YOUR_PASSWORD"; // Account password
+const string PlayerKey = "XXX"; // Only the last 3 characters are required for spending coppers
+const string Recipient = "shadyx.tm"; // Login of the player to send a private message to (will cost 2 coppers)
 const int Donation = 0; // Amount of coppers to send along with the message (will cost an extra 5% Nadeo fee)
 
 // First of all, instantiate a GameApi object - used to interact with... well, the game API
@@ -38,8 +38,8 @@ try
     // await gameApi.GetResponseAsync<GetOnlineProfileRequest, MyCustomGetOnlineProfileResponse>(new GetOnlineProfileRequest(), gameSession)
     var onlineProfile = await gameApi.GetOnlineProfileAsync(gameSession);
 
-    int coppers = onlineProfile.Response.Content.Coppers;
-    int maxSpendableCoppers = (int)Math.Floor((coppers - 2) / 1.05);
+    long coppers = onlineProfile.Response.Content.Coppers;
+    long maxSpendableCoppers = (long)Math.Floor((coppers - 2) / 1.05);
 
     Console.WriteLine($"Email: {onlineProfile.Response.Content.Email}");
     Console.WriteLine($"Coppers: {coppers}");
@@ -71,7 +71,6 @@ try
     // If you do then please consider Starring the repo on GitHub, that would be very much appreciated! <3
     Console.ForegroundColor = ConsoleColor.Green;
     Console.WriteLine($"Successfully sent message to {Recipient}");
-    Console.Write("Done ");
 }
 catch (Exception ex)
 {
@@ -80,9 +79,9 @@ catch (Exception ex)
 }
 finally
 {
-    Console.ResetColor();
-
     // Do not forget to disconnect a session once you are done with it
     // This is required if you wish to login to the same account later, as the game might throw an "already connected" error otherwise
     await gameApi.DisconnectAsync(gameSession);
 }
+
+Console.ReadKey(true);

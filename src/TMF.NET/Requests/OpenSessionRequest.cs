@@ -17,5 +17,5 @@ public class OpenSessionRequest : RequestBase<OpenSessionRequest>
     }
 
     [XmlElement("cr")]
-    public string Cr { get; set; }
+    public string Cr { get; /*private*/ set; }
 }

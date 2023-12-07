@@ -21,7 +21,7 @@ public class GameApi
     {
     }
 
-    public GameApi(IWebProxy proxy, bool backconnect = false, TimeSpan? timeout = null)
+    public GameApi(IWebProxy proxy, bool rotating = false, TimeSpan? timeout = null)
     {
         _httpClient = new(new HttpClientHandler()
         {
@@ -32,7 +32,7 @@ public class GameApi
             Timeout = timeout ?? TimeSpan.FromSeconds(10)
         };
 
-        _httpClient.DefaultRequestHeaders.ConnectionClose = backconnect;
+        _httpClient.DefaultRequestHeaders.ConnectionClose = rotating;
     }
 
     public async Task<ResponseBase<TRequest, TResponse>> GetResponseAsync<TRequest, TResponse>(TRequest request, GameSession? session = null)
@@ -97,7 +97,7 @@ public class GameApi
     {
         return await GetResponseAsync<OpenSessionRequest, OpenSessionResponse>(
             new OpenSessionRequest(),
-            new GameSession(login, 1, gameServer));
+            new GameSession(login, -1, gameServer));
     }
 
     public async Task<GameSession> ConnectAsync(
@@ -130,7 +130,7 @@ public class GameApi
             session);
     }
 
-    public async Task<ResponseBase<CheckLoginRequest, CheckLoginResponse>> ValidateUsernameAsync(
+    public async Task<ResponseBase<CheckLoginRequest, CheckLoginResponse>> CheckLoginAsync(
         string login)
     {
         return await GetResponseAsync<CheckLoginRequest, CheckLoginResponse>(
@@ -142,7 +142,7 @@ public class GameApi
         string recipient,
         string? subject,
         string? message,
-        int donation = 0)
+        long donation = 0)
     {
         return await GetResponseAsync<SendMessagesRequest, SendMessagesResponse>(
             new SendMessagesRequest(recipient, subject, message, donation),

@@ -10,26 +10,26 @@ public class SendMessagesRequest : RequestBase<SendMessagesRequest>
     {
     }
 
-    internal SendMessagesRequest(string recipient, string? subject, string? message, int donation)
+    public SendMessagesRequest(string recipient, string? subject, string? message, long donation)
         : base("SendMessages", new()
         {
             Recipient = recipient,
             Subject = subject ?? " ",
             Message = message ?? "+",
-            Donation = donation.ToString() // can't use int because it's buggy
+            Donation = donation.ToString() // can't use long because it's buggy
         }, true)
     {
     }
 
     [XmlElement("r1")]
-    public string Recipient { get; set; }
+    public string Recipient { get; /*private*/ set; }
 
     [XmlElement("s1")]
-    public string Subject { get; set; }
+    public string Subject { get; /*private*/ set; }
 
     [XmlElement("m1")]
-    public string Message { get; set; }
+    public string Message { get; /*private*/ set; }
 
     [XmlElement("d1")]
-    public string Donation { get; set; }
+    public string Donation { get; /*private*/ set; }
 }

@@ -15,7 +15,7 @@ public class GameSession
     {
     }
 
-    public GameSession(string login, int sessionId, GameServer? gameServer = null)
+    public GameSession(string login, long sessionId, GameServer? gameServer = null)
     {
         Login = login;
         SessionId = sessionId;
@@ -34,24 +34,25 @@ public class GameSession
     }
 
     [XmlElement("login")]
-    public string Login { get; set; }
+    public string Login { get; /*internal*/ set; }
 
     [XmlElement("session")]
-    public int SessionId { get; set; }
+    public long SessionId { get; /*internal*/ set; }
 
     [XmlIgnore]
-    public GameServer GameServer { get; internal set; }
+    public GameServer GameServer { get; /*internal*/ set; }
 
     [XmlIgnore]
     internal BlowFish Blowfish { get; }
 
     [XmlIgnore]
-    private int AuthCount { get; set; }
+    private long AuthCount { get; set; }
 
-    internal string GenerateAuthValue<TRequest>(TRequest request) where TRequest : RequestBase<TRequest>
+    internal string GenerateAuthValue<TRequest>(TRequest request)
+        where TRequest : RequestBase<TRequest>
     {
         if (Blowfish == null)
-            throw new Exception("This session has no associated password.");
+            throw new InvalidOperationException("This session has no associated password.");
 
         const string salt1 = "00000000";
         const string salt2 = "00000000";

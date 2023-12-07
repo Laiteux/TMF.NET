@@ -14,7 +14,7 @@ public class ConnectRequest : RequestBase<ConnectRequest>
     {
     }
 
-    internal ConnectRequest(GameSession session, string? playerKeyLast3characters = null)
+    public ConnectRequest(GameSession session, string? playerKeyLast3characters = null)
         : base("Connect", new()
         {
             HardwareKey = session.Blowfish.EncryptCBC(Guid.NewGuid().ToString("N").ToUpper().Remove(20).Insert(12, "-")).ToUpper(),
@@ -27,17 +27,17 @@ public class ConnectRequest : RequestBase<ConnectRequest>
     }
 
     [XmlElement("hk")]
-    public string HardwareKey { get; set; }
+    public string HardwareKey { get; /*private*/ set; }
 
     [XmlElement("vk")]
-    public string? ValidationKey { get; set; }
+    public string? ValidationKey { get; /*private*/ set; }
 
     [XmlElement("sd")]
-    public string DedicatedServerDate { get; set; }
+    public string DedicatedServerDate { get; /*private*/ set; }
 
     [XmlElement("pk")]
-    public string PublicKey { get; set; }
+    public string PublicKey { get; /*private*/ set; }
 
     [XmlElement("cl")]
-    public string Login { get; set; }
+    public string Login { get; /*private*/ set; }
 }

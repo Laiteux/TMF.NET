@@ -4,13 +4,14 @@
 
 namespace TMF.NET.Requests;
 
-public class RequestBase<TParams> where TParams : RequestBase<TParams>
+public class RequestBase<TParams>
+    where TParams : RequestBase<TParams>
 {
     protected RequestBase()
     {
     }
 
-    protected RequestBase(string procedureName, TParams? parameters, bool requiresAuth = false, GameServer? overrideGameServer = null)
+    public RequestBase(string procedureName, TParams? parameters, bool requiresAuth = false, GameServer? overrideGameServer = null)
     {
         Game = RequestBaseGame.Default;
 
@@ -25,13 +26,16 @@ public class RequestBase<TParams> where TParams : RequestBase<TParams>
     }
 
     [XmlElement("game")]
-    public RequestBaseGame Game { get; set; }
+    public RequestBaseGame Game { get; /*private*/ set; }
 
     [XmlElement("author")]
-    public GameSession Session { get; set; }
+    public GameSession Session { get; /*internal*/ set; }
 
     [XmlElement("request")]
-    public RequestBaseRequest Content { get; set; }
+    public RequestBaseRequest Content { get; /*private*/ set; }
+
+    [XmlElement("auth")]
+    public RequestBaseAuth Auth { get; /*internal*/ set; }
 
     [XmlIgnore]
     internal bool RequiresAuth { get; }
@@ -39,22 +43,19 @@ public class RequestBase<TParams> where TParams : RequestBase<TParams>
     [XmlIgnore]
     internal GameServer? OverrideGameServer { get; }
 
-    [XmlElement("auth")]
-    public RequestBaseAuth Auth { get; set; }
-
     public class RequestBaseGame
     {
         [XmlElement("name")]
-        public string Name { get; set; }
+        public string Name { get; /*internal*/ set; }
 
         [XmlElement("version")]
-        public string Version { get; set; }
+        public string Version { get; /*internal*/ set; }
 
         [XmlElement("distro")]
-        public string Distro { get; set; }
+        public string Distro { get; /*internal*/ set; }
 
         [XmlElement("lang")]
-        public string Lang { get; set; }
+        public string Lang { get; /*internal*/ set; }
 
         internal static readonly RequestBaseGame Default = new()
         {
@@ -68,15 +69,15 @@ public class RequestBase<TParams> where TParams : RequestBase<TParams>
     public class RequestBaseRequest
     {
         [XmlElement("name")]
-        public string ProcedureName { get; set; }
+        public string ProcedureName { get; /*internal*/ set; }
 
         [XmlElement("params")]
-        public TParams? Params { get; set; }
+        public TParams? Params { get; /*internal*/ set; }
     }
 
     public class RequestBaseAuth
     {
         [XmlElement("value")]
-        public string Value { get; set; }
+        public string Value { get; /*internal*/ set; }
     }
 }

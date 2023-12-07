@@ -8,11 +8,11 @@ namespace TMF.NET.Responses;
 
 public class GetOnlineProfileResponse : ResponseBase<GetOnlineProfileRequest, GetOnlineProfileResponse>
 {
-    public int OnlineRanking => _B.OnlineRanking;
+    public long OnlineRanking => _B.OnlineRanking;
     public string Location => _D.Location;
     public string Email => _D.Email;
     public string HtmlNickname => _D.HtmlNickname;
-    public int Coppers => _F.Coppers;
+    public long Coppers => _F.Coppers;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     [XmlElement("b")]
@@ -29,7 +29,7 @@ public class GetOnlineProfileResponse : ResponseBase<GetOnlineProfileRequest, Ge
     public class GetOnlineProfileResponseB
     {
         [XmlElement("g")]
-        public int OnlineRanking { get; set; }
+        public long OnlineRanking { get; set; }
     }
 
     public class GetOnlineProfileResponseD
@@ -47,6 +47,6 @@ public class GetOnlineProfileResponse : ResponseBase<GetOnlineProfileRequest, Ge
     public class GetOnlineProfileResponseF
     {
         [XmlElement("c")]
-        public int Coppers { get; set; }
+        public long Coppers { get; set; }
     }
 }

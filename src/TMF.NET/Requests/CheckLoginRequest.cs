@@ -10,7 +10,7 @@ public class CheckLoginRequest : RequestBase<CheckLoginRequest>
     {
     }
 
-    internal CheckLoginRequest(string login)
+    public CheckLoginRequest(string login)
         : base("CheckLogin", new()
         {
             Login = login
@@ -19,5 +19,5 @@ public class CheckLoginRequest : RequestBase<CheckLoginRequest>
     }
 
     [XmlElement("l")]
-    public string Login { get; set; }
+    public string Login { get; /*private*/ set; }
 }
