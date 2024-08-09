@@ -67,8 +67,7 @@ try
     await gameApi.SendMessageAsync(gameSession, Recipient, "Hello from TMF.NET (:", null, Donation);
 
     // That's it for the demo!
-    // I really hope you enjoy this library, as I did my best to make it as elegant and easy-to-use as possible
-    // If you do then please consider Starring the repo on GitHub, that would be very much appreciated! <3
+    // If you enjoy this library then please consider Starring the repo on GitHub, that would be very much appreciated (:
     Console.ForegroundColor = ConsoleColor.Green;
     Console.WriteLine($"Successfully sent message to {Recipient}");
 }
@@ -80,7 +79,7 @@ catch (Exception ex)
 finally
 {
     // Do not forget to disconnect a session once you are done with it
-    // This is required if you wish to login to the same account later, as the game might throw an "already connected" error otherwise
+    // This is required if you wish to login to the same account later, as the game/API might throw an "already connected" error otherwise
     await gameApi.DisconnectAsync(gameSession);
 }
 
