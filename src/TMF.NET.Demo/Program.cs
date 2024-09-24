@@ -1,32 +1,30 @@
-﻿// This demo project will:
-// - Connect to an account
-// - Retrieve some info, including the account's linked email address and owned copper amount
-// - Submit, validate, associate player key (per-session requirement for spending coppers)
-// - Send an in-game private message to a player, including an optional donation
+// This demo project will:
+// - Connect to a TrackMania Forever account
+// - Retrieve some info like the associated email address and owned copper amount
+// - Submit/validate/associate player key (per-session requirement for spending coppers)
+// - Send an in-game private message to a player, including an optional copper amount
 
 using TMF.NET;
 
 const string Login = "YOUR_LOGIN"; // Account login
 const string Password = "YOUR_PASSWORD"; // Account password
-const string PlayerKey = "XXX"; // Only the last 3 characters are required for spending coppers
+const string PlayerKey = "XXX"; // Only the last 3 characters are required
 const string Recipient = "shadyx.tm"; // Login of the player to send a private message to (will cost 2 coppers)
 const int Donation = 0; // Amount of coppers to send along with the message (will cost an extra 5% Nadeo fee)
 
-// First of all, instantiate a TmfGameApi object - used to interact with... well, the game API
-// If you wish, you can also pass a IWebProxy object to the constructor for it to use
+// First of all, instantiate a TmfGameApi object
+// You can also optionally pass a IWebProxy object as parameter
 var gameApi = new TmfGameApi();
 
-// Open a new session using the account's login
-// You can also specify the account's game server (Nations/United) if you know it - if you don't, TMF.NET will figure it out for you but then it might have to send 1 extra request
-// Returns a unique ID and a salt, which is being used for hashing values (not to worry about, as TMF.NET handles all of that for you behind the scenes)
+// Then open a new session associated with the account's Login
+// You can also specify the account's game server (Nations/United) if you know it - if you don't, TMF.NET will figure it out but then it might have to send 1 extra request
 var openSession = await gameApi.OpenSessionAsync(Login);
 
-// Connect with our previously created session, and the associated account's password
-// If the password is correct, our session ID will then become authenticated server-side, and we will be able to use this TmfGameSession object to proceed further
+// Now, authenticate using our openSession and the account's Password
+// If the Password is correct, our openSession will then become a gameSession, as we are able to to use the returned TmfGameSession object to proceed with further authenticated requests
 var gameSession = await gameApi.ConnectAsync(openSession, Password);
 
 Console.WriteLine($"Successfully logged in as {Login}");
-Console.WriteLine($"Session ID: {gameSession.SessionId}");
 Console.WriteLine();
 
 try
@@ -57,7 +55,7 @@ try
     if (Donation != 0 && maxSpendableCoppers < Donation)
         throw new("Not enough Coppers - Message not sent.");
 
-    // Submit, validate, associate player key with our session - this is required for spending coppers
+    // Submit/validate/associate player key with our session - this is required for spending coppers
     // In order to avoid this extra request, you could also pass the key directly as a parameter to the ConnectAsync method
     if (!await gameApi.ValidatePlayerKeyAsync(gameSession, PlayerKey))
         throw new("Invalid player key.");
