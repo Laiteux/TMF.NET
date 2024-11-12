@@ -140,8 +140,8 @@ public class TmfGameApi
     public async Task<TmfResponseBase<TmfSendMessagesRequest, TmfSendMessagesResponse>> SendMessageAsync(
         TmfGameSession session,
         string recipient,
-        string? subject,
-        string? message,
+        string? subject = null,
+        string? message = null,
         long donation = 0)
     {
         return await GetResponseAsync<TmfSendMessagesRequest, TmfSendMessagesResponse>(
